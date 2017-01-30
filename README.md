@@ -10,3 +10,8 @@ survival, and crafting.
 ### Goals
  - Generate terrain based on character position
  - Move along terrain endlessly
+
+### TODO
+#### Renderer Goals:
+    Group objects by common meshes/shaders/textures/materials to minimize
+    resource binding calls, in order to maximize GPU concurrency.

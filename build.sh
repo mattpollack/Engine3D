@@ -1,6 +1,7 @@
 #libsfml-graphics, libsfml-window and libsfml-system
 
 g++ -std=c++14 \
+./src/Object/*.cpp \
 ./src/Texture/*.cpp \
 ./src/Shader/*.cpp \
 ./src/*.cpp \

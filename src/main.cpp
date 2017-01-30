@@ -4,9 +4,9 @@
 
 #include <memory>
 
-SceneManager game;
-
 int main() {
+    SceneManager game;
+
     std::unique_ptr<Scene> testScene(new TestScene(&game));
 
     game.addScene("test", testScene);

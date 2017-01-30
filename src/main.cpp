@@ -1,19 +1,15 @@
-
-#include "SceneManager.h"
+#include "Renderer.h"
 #include "Scene.h"
 #include "Scenes/TestScene.h"
-#include "Object/Object.h"
 
 #include <memory>
 
 int main() {
-    Object::Mesh testMesh = Object::meshLoad("cube");
+    Renderer::init();
 
-    SceneManager game;
+    std::unique_ptr<Scene> testScene(new TestScene());
 
-    std::unique_ptr<Scene> testScene(new TestScene(&game));
-
-    game.addScene("test", testScene);
-    game.toScene("test");
-    game.start();
+    Renderer::addScene("test", testScene);
+    Renderer::toScene("test");
+    Renderer::start();
 }

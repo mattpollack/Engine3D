@@ -7,7 +7,6 @@
 
 class TestScene : public Scene {
 private:
-    SceneManager * manager;
     std::vector<GLfloat> vpos = {
         0.5, 0.5,
         -0.5, 0.5,
@@ -30,9 +29,8 @@ private:
     sf::Clock clock;
 public:
     // Custom constructor to pass manager
-    TestScene(SceneManager * p_manager)
+    TestScene()
     : testModel(vpos, tcoo, indices) {
-        manager = p_manager;
         testTexture.load("sample0");
     }
 

@@ -1,8 +1,6 @@
 #ifndef _SCENE_H
 #define _SCENE_H
 
-#include "SceneManager.h"
-
 class Scene {
 private:
 public:

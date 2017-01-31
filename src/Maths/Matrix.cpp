@@ -20,7 +20,7 @@ namespace Maths {
         matrix = glm::translate(matrix, entity.position);
         matrix = glm::rotate(matrix, glm::radians(entity.rotation.x), {1, 0, 0});
         matrix = glm::rotate(matrix, glm::radians(entity.rotation.y), {0, 1, 0});
-        matrix = glm::rotate(matrix, glm::radians(entity.rotation.z), {0, 0, 1});    
+        matrix = glm::rotate(matrix, glm::radians(entity.rotation.z), {0, 0, 1});
 
         return matrix;
     }
@@ -29,7 +29,7 @@ namespace Maths {
         return glm::perspective(
             glm::radians(120.0f),
             (float)Display::WIDTH / (float)Display::HEIGHT,
-            0.0010f,
+            0.1f,
             1000.0f
         );
     }

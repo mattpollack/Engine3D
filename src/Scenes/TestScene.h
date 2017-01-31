@@ -1,7 +1,6 @@
 #include "../Renderer.h"
-//#include "../Model.h"
 #include "../Texture/Texture.h"
-#include "../Shader/SimpleShader.h"
+#include "../Shader/CameraShader.h"
 #include "../Maths/Matrix.h"
 
 #include <math.h>
@@ -9,46 +8,38 @@
 
 class TestScene : public Scene {
 private:
-    Object::Mesh testMesh;
-    Shader::SimpleShader testShader;
-    Texture::BasicTexture testTexture;
     Renderer::Entity testEntity;
-    Renderer::Entity testCamera;
 
     sf::Clock clock;
 public:
-    // Custom constructor to pass manager
     TestScene() {
-        testMesh.load("cube");
-        //testTexture.load("sample0");
-        testEntity.position.z = -3;
+        std::unique_ptr<Object::Mesh> testMesh(new Object::Mesh);
+        testMesh.get()->load("cube");
+
+        Renderer::registerMesh("cube", testMesh);
+
+        testEntity.addMesh("cube");
     }
 
     void enter() {
         printf("%s\n", "Entering");
-        testShader.bind();
-        testShader.setProjMatrix(Maths::createProjMatrix());
-        testShader.setViewMatrix(Maths::createViewMatrix(testCamera));
-        testShader.unbind();
     }
 
     void update() {
-        testEntity.position.x = sin(clock.getElapsedTime().asSeconds())*2;
-        testEntity.position.y = cos(clock.getElapsedTime().asSeconds())*2;
+        testEntity.position = {
+            0,//sin(clock.getElapsedTime().asSeconds())*2,
+            0,//cos(clock.getElapsedTime().asSeconds())*2,
+            -3
+        };
+        testEntity.rotation = {
+            sin(clock.getElapsedTime().asSeconds()/2)*180,
+            0,
+            0
+        };
     }
 
     void draw() {
-        testShader.bind();
-        testShader.setTime(clock.getElapsedTime().asSeconds());
-        //testTexture.bind();
-        testMesh.bind();
-        testShader.setModelMatrix(Maths::createModelMatrix(testEntity));
-
-        glDrawElements(GL_TRIANGLES, testMesh.getIndicesCount(), GL_UNSIGNED_INT, nullptr);
-
-        testMesh.unbind();
-        //testTexture.unbind();
-        testShader.unbind();
+        Renderer::draw(testEntity);
     }
 
     void exit() {

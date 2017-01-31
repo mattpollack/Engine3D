@@ -28,13 +28,29 @@ namespace Object {
 
                     if (line[i] == ' ' || i == line.size() - 1) {
                         if (line[0] == 'v') m_vertices.push_back(std::stof(numString, &size));
-                        else                m_indices.push_back(std::stoul(numString, &size));
+                        else                m_indices.push_back(std::stoul(numString, &size) - 1);
 
                         numString = "";
                     }
                 }
             }
         }
+
+        /*for (int i = 0; i < m_vertices.size(); ++i) {
+            if (i % 3 == 0) {
+                printf("\n");
+            }
+            printf("%f, ", m_vertices[i]);
+        }
+
+        for (int i = 0; i < m_indices.size(); ++i) {
+            if (i % 3 == 0) {
+                printf("\n");
+            }
+            printf("%d, ", m_indices[i]);
+        }
+
+        printf("\n");*/
 
         m_indicesCount = m_indices.size();
 

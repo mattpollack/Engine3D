@@ -4,6 +4,7 @@
 #include "Object/Object.h"
 #include "Texture/Texture.h"
 #include "Shader/ShaderProgram.h"
+#include "Shader/CameraShader.h"
 #include "Scene.h"
 
 #include <map>
@@ -41,7 +42,14 @@ namespace Renderer {
     public:
         glm::vec3 position = {0, 0, 0};
         glm::vec3 rotation = {0, 0, 0};
-        //Entity(const std::string& mesh, const std::string& shader, const std::string& texture);
+
+        std::string meshName = "";
+        std::string shaderName = "";
+        std::string textureName = "";
+
+        void addMesh(const std::string& name);
+        void addShader(const std::string& name);
+        void addTexture(const std::string& name);
     };
 
     void draw(const Entity& entity);

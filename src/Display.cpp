@@ -9,12 +9,15 @@ namespace Display {
         sf::ContextSettings settings;
         settings.majorVersion = 4;
         settings.minorVersion = 3;
+        settings.depthBits = 24;
 
         window = std::make_unique<sf::Window>(sf::VideoMode(WIDTH, HEIGHT), "Window", sf::Style::Close, settings);
 
         glewExperimental = GL_TRUE;
         glewInit();
         glViewport(0, 0, WIDTH, HEIGHT);
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(GL_TRUE);
 
         printf("%s\n", glGetString(GL_VERSION));
     }

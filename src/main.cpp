@@ -6,7 +6,6 @@
 
 int main() {
     Renderer::init();
-
     std::unique_ptr<Scene> testScene(new TestScene());
 
     Renderer::addScene("test", testScene);

@@ -1,9 +1,13 @@
 #include "Renderer.h"
 #include "Display.h"
+#include "Maths/Matrix.h"
 
 #include <stdexcept>
 
 namespace Renderer {
+    // Entity management
+    std::vector<Entity> entitiesToDraw;
+
     /**
      * Rendering Optimizations
      */
@@ -28,9 +32,19 @@ namespace Renderer {
      */
     std::map<std::string, std::unique_ptr<Scene>> sceneList;
     Scene * sceneCurrent = nullptr;
+    std::unique_ptr<Shader::CameraShader> camera;
+    Entity cameraEntity;
 
     void init() {
+        printf("0\n");
         Display::init();
+        printf("1\n");
+        camera = std::make_unique<Shader::CameraShader>();
+        camera->bind();
+        camera->setProjMatrix(Maths::createProjMatrix());
+        camera->setViewMatrix(Maths::createViewMatrix(cameraEntity));
+        camera->unbind();
+        printf("2\n");
     }
 
     void addScene(const std::string& name, std::unique_ptr<Scene>& scene) {
@@ -53,14 +67,57 @@ namespace Renderer {
         }
     }
 
+    Shader::ShaderProgram * r_shader = nullptr;
+    Texture::BasicTexture * r_texture = nullptr;
+    Object::Mesh * r_mesh = nullptr;
+
     void start() {
         while (Display::isOpen()) {
             Display::checkWindowEvents();
             Display::clear();
 
-            // TODO deltaT
             sceneCurrent->update();
             sceneCurrent->draw();
+
+            r_shader = nullptr;
+            r_texture = nullptr;
+            r_mesh = nullptr;
+
+            camera->bind();
+            for (int i = 0; i < entitiesToDraw.size(); ++i) {
+                if (m_meshes.find(entitiesToDraw[i].meshName) != m_meshes.end()) {
+                    r_mesh = m_meshes[entitiesToDraw[i].meshName].get();
+                }
+                else {
+                    continue;
+                }
+
+                if (m_shaders.find(entitiesToDraw[i].shaderName) != m_shaders.end()) {
+                    r_shader = m_shaders[entitiesToDraw[i].shaderName].get();
+                    r_shader->bind();
+                }
+
+                if (m_textures.find(entitiesToDraw[i].textureName) != m_textures.end()) {
+                    r_texture = m_textures[entitiesToDraw[i].textureName].get();
+                    r_texture->bind();
+                }
+
+                r_mesh->bind();
+                camera->setModelMatrix(Maths::createModelMatrix(entitiesToDraw[i]));
+                glDrawElements(GL_TRIANGLES, r_mesh->getIndicesCount(), GL_UNSIGNED_INT, nullptr);
+                r_mesh->unbind();
+
+                if (r_texture != nullptr) {
+                    r_texture->unbind();
+                }
+
+                if (r_shader != nullptr) {
+                    r_shader->unbind();
+                }
+            }
+            camera->unbind();
+
+            entitiesToDraw.clear();
 
             Display::display();
         }
@@ -69,13 +126,19 @@ namespace Renderer {
     /**
      * Entity Management
      */
-    /*Entity::Entity(const std::string& mesh, const std::string& shader, const std::string& texture) {
-        position.x = 0;
-        position.y = 0;
-        position.z = 0;
-    }*/
+    void Entity::addMesh(const std::string& name) {
+        meshName = name;
+    }
+
+    void Entity::addShader(const std::string& name) {
+        shaderName = name;
+    }
+
+    void Entity::addTexture(const std::string& name) {
+        textureName = name;
+    }
 
     void draw(const Entity& entity) {
-        // ..
+        entitiesToDraw.push_back(entity);
     }
 }

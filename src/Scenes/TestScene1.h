@@ -6,15 +6,14 @@
 #include <math.h>
 #include <SFML/System/Clock.hpp>
 
-class TestScene : public Scene {
+class TestScene1 : public Scene {
 private:
-    Renderer::Entity testEntity;
-
+    std::vector<Renderer::Entity> testEntities;
     std::unique_ptr<Object::Mesh> testMesh;
 
     sf::Clock clock;
 public:
-    TestScene() {
+    TestScene1() {
         testMesh = std::make_unique<Object::Mesh>();
         testMesh.get()->load("cube");
 
@@ -26,7 +25,10 @@ public:
         /**
          * Add shaders, meshes, and textures to entities
          */
-        testEntity.addMesh("cube");
+        for (int i = 0; i < 64; ++i) {
+            testEntities.push_back(Renderer::Entity());
+            testEntities[i].addMesh("cube");
+        }
     }
 
     void enter() {
@@ -34,20 +36,25 @@ public:
     }
 
     void update() {
-        testEntity.position = {
-            sin(clock.getElapsedTime().asSeconds())*2,
-            cos(clock.getElapsedTime().asSeconds())*2,
-            -3
-        };
-        testEntity.rotation = {
-            sin(clock.getElapsedTime().asSeconds()/2)*180,
-            0,
-            0
-        };
+        for (int i = 0; i < testEntities.size(); ++i) {
+            testEntities[i].position = {
+                -16 + (i % 8)*4,
+                -16 + (i/8)*4,
+                -16
+            };
+
+            testEntities[i].rotation = {
+                sin(clock.getElapsedTime().asSeconds()/2)*180,
+                0,
+                0
+            };
+        }
     }
 
     void draw() {
-        Renderer::draw(testEntity);
+        for (int i = 0; i < testEntities.size(); ++i) {
+            Renderer::draw(testEntities[i]);
+        }
     }
 
     void exit() {

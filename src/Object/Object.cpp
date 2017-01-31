@@ -7,7 +7,7 @@
 
 namespace Object {
     void Mesh::load(const std::string& filename) {
-        /*std::ifstream inFile("data/objects/" + filename + ".obj");
+        std::ifstream inFile("data/objects/" + filename + ".obj");
         std::string line;
 
         if (!inFile.is_open()) {
@@ -34,19 +34,7 @@ namespace Object {
                     }
                 }
             }
-        }*/
-
-        m_vertices = {
-            0.5,    0.5,    0.0,
-            -0.5,   0.5,    0.0,
-            -0.5,   -0.5,   0.0,
-            0.5,    -0.5,   0.0
-        };
-
-        m_indices = {
-            0, 1, 2,
-            2, 3, 0
-        };
+        }
 
         m_indicesCount = m_indices.size();
 

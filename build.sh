@@ -1,5 +1,6 @@
 #libsfml-graphics, libsfml-window and libsfml-system
 
+echo "Compiling..."
 g++ -std=c++14 \
 ./src/Maths/*.cpp \
 ./src/Object/*.cpp \

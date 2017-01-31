@@ -14,3 +14,5 @@ survival, and crafting.
 ### TODO
 #### Renderer Goals:
 Group objects by common meshes/shaders/textures to minimize resource binding calls, in order to maximize GPU concurrency.
+
+Datatype that groups by multiple identifiers, and orders by least identifier group differences. O(1) find.

@@ -8,15 +8,34 @@
  * Currently meshes support triangulated export, no materials, no textures, no
  * NURBS.
  */
-namespace Object {
-    typedef struct Mesh {
-        std::vector<GLfloat> vertices;
-        std::vector<GLuint>  indices;
-        // TODO textures, materials, NURBS? (lol)
-    } Mesh;
 
-    // Currently assumes a properly formatted file
-    Mesh meshLoad(const std::string& filename);
+/**
+ * REMEMBER TO DESTROY properly
+     Model::~Model() {
+         glDeleteVertexArrays(1, &m_vao);
+         glDeleteBuffers(m_buffers.size(), m_buffers.data());
+     }
+ */
+namespace Object {
+    class Mesh {
+    private:
+        std::vector<GLuint>  m_buffers;
+
+        GLuint m_vao = 0;
+        GLuint m_vboCount = 0;
+        GLuint m_indicesCount = 0;
+
+        void addVBO(int dim, const std::vector<GLfloat>& data);
+        void addEBO(const std::vector<GLuint>& indices);
+    public:
+        std::vector<GLfloat> m_vertices;
+        std::vector<GLuint>  m_indices;
+        
+        void load(const std::string& filename);
+        void bind();
+        void unbind();
+        GLuint getIndicesCount() const;
+    };
 }
 
 #endif

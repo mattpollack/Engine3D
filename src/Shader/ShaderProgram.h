@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <string>
+#include "../GlmCommon.h"
 
 namespace Shader {
     class ShaderProgram {
@@ -12,6 +13,7 @@ namespace Shader {
         virtual void getUniformLocations() = 0;
         GLuint getId() const;
         void loadFloat(GLuint location, float value);
+        void loadMatrix4(GLuint location, const glm::mat4& matrix);
     public:
         ShaderProgram(const std::string& vertexShaderFile, const std::string& fragmentShaderFile);
         ~ShaderProgram();

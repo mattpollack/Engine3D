@@ -1,41 +1,36 @@
+#include "../Renderer.h"
+//#include "../Model.h"
 #include "../Texture/Texture.h"
 #include "../Shader/SimpleShader.h"
-#include "../Model.h"
+#include "../Maths/Matrix.h"
 
 #include <math.h>
 #include <SFML/System/Clock.hpp>
 
 class TestScene : public Scene {
 private:
-    std::vector<GLfloat> vpos = {
-        0.5, 0.5,
-        -0.5, 0.5,
-        -0.5, -0.5,
-        0.5, -0.5,
-    };
-    std::vector<GLfloat> tcoo = {
-        1.0, 0.0,
-        0.0, 0.0,
-        0.0, 1.0,
-        1.0, 1.0,
-    };
-    std::vector<GLuint> indices = {
-        0, 1, 2,
-        2, 3, 0
-    };
-    Model testModel;
+    Object::Mesh testMesh;
     Shader::SimpleShader testShader;
     Texture::BasicTexture testTexture;
+    Renderer::Entity testEntity;
+    Renderer::Entity testCamera;
+
     sf::Clock clock;
 public:
     // Custom constructor to pass manager
-    TestScene()
-    : testModel(vpos, tcoo, indices) {
-        testTexture.load("sample0");
+    TestScene() {
+        testMesh.load("cube");
+        //testTexture.load("sample0");
+        testEntity.position = {0, 0, -3};
+        testEntity.rotation = {0, 0, 0};
+
+        testCamera.position = {0, 0, 0};
+        testCamera.rotation = {0, 0, 0};
     }
 
     void enter() {
         printf("%s\n", "Entering");
+        testShader.setModelMatrix(Maths::createModelMatrix(testEntity));
     }
 
     void update() {
@@ -45,13 +40,14 @@ public:
     void draw() {
         testShader.bind();
         testShader.setTime(clock.getElapsedTime().asSeconds());
-        testTexture.bind();
-        testModel.bind();
+        testShader.setViewMatrix(Maths::createViewMatrix(testCamera));
+        //testTexture.bind();
+        testMesh.bind();
 
-        glDrawElements(GL_TRIANGLES, testModel.getIndicesCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, testMesh.getIndicesCount(), GL_UNSIGNED_INT, nullptr);
 
-        testModel.unbind();
-        testTexture.unbind();
+        testMesh.unbind();
+        //testTexture.unbind();
         testShader.unbind();
     }
 

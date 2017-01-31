@@ -26,4 +26,8 @@ namespace Shader {
     void ShaderProgram::loadFloat(GLuint location, float value) {
         glUniform1f(location, value);
     }
+
+    void ShaderProgram::loadMatrix4(GLuint location, const glm::mat4& matrix) {
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
 }

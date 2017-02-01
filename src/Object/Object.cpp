@@ -6,6 +6,20 @@
 #include <stdexcept>
 
 namespace Object {
+    void Mesh::load() {
+        m_indicesCount = m_indices.size();
+
+        glGenVertexArrays(1, &m_vao);
+        glBindVertexArray(m_vao);
+
+        addVBO(3, m_vertices);
+        //addVBO(2, textureCoordinates);
+        addEBO(m_indices);
+
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
     void Mesh::load(const std::string& filename) {
         std::ifstream inFile("data/objects/" + filename + ".obj");
         std::string line;
@@ -36,33 +50,14 @@ namespace Object {
             }
         }
 
-        /*for (int i = 0; i < m_vertices.size(); ++i) {
-            if (i % 3 == 0) {
-                printf("\n");
-            }
-            printf("%f, ", m_vertices[i]);
-        }
+        load();
+    }
 
-        for (int i = 0; i < m_indices.size(); ++i) {
-            if (i % 3 == 0) {
-                printf("\n");
-            }
-            printf("%d, ", m_indices[i]);
-        }
+    void Mesh::load(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices) {
+        m_vertices = vertices;
+        m_indices = indices;
 
-        printf("\n");*/
-
-        m_indicesCount = m_indices.size();
-
-        glGenVertexArrays(1, &m_vao);
-        glBindVertexArray(m_vao);
-
-        addVBO(3, m_vertices);
-        //addVBO(2, textureCoordinates);
-        addEBO(m_indices);
-
-        glBindVertexArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        load();
     }
 
     void Mesh::bind() {

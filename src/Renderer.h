@@ -5,6 +5,7 @@
 #include "Texture/Texture.h"
 #include "Shader/ShaderProgram.h"
 #include "Shader/CameraShader.h"
+#include "Maths/Matrix.h"
 #include "Scene.h"
 
 #include <map>

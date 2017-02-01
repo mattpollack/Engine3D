@@ -1,7 +1,4 @@
 #include "../Renderer.h"
-#include "../Texture/Texture.h"
-#include "../Shader/CameraShader.h"
-#include "../Maths/Matrix.h"
 
 #include <math.h>
 #include <SFML/System/Clock.hpp>
@@ -14,20 +11,28 @@ private:
     sf::Clock clock;
 public:
     TestScene1() {
+        /**
+         * Create shader, mesh, texture for registering
+         */
         testMesh = std::make_unique<Object::Mesh>();
         testMesh.get()->load("cube");
 
         /**
-         * Register shader, meshes, and textures
+         * Register shader, mesh, and texture
          */
         Renderer::registerMesh("cube", testMesh);
 
         /**
-         * Add shaders, meshes, and textures to entities
+         * Add shader, meshe, and texture to entities
          */
         for (int i = 0; i < 64; ++i) {
             testEntities.push_back(Renderer::Entity());
             testEntities[i].addMesh("cube");
+            testEntities[i].position = {
+                -16 + (i % 8)*4,
+                -16 + (i/8)*4,
+                -16
+            };
         }
     }
 
@@ -37,12 +42,6 @@ public:
 
     void update() {
         for (int i = 0; i < testEntities.size(); ++i) {
-            testEntities[i].position = {
-                -16 + (i % 8)*4,
-                -16 + (i/8)*4,
-                -16
-            };
-
             testEntities[i].rotation = {
                 sin(clock.getElapsedTime().asSeconds()/2)*180,
                 0,

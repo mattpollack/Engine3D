@@ -25,13 +25,15 @@ namespace Object {
         GLuint m_vboCount = 0;
         GLuint m_indicesCount = 0;
 
+        void load();
         void addVBO(int dim, const std::vector<GLfloat>& data);
         void addEBO(const std::vector<GLuint>& indices);
     public:
         std::vector<GLfloat> m_vertices;
         std::vector<GLuint>  m_indices;
-        
+
         void load(const std::string& filename);
+        void load(const std::vector<GLfloat>& vertices, const std::vector<GLuint>& indices);
         void bind();
         void unbind();
         GLuint getIndicesCount() const;

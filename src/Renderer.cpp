@@ -36,15 +36,13 @@ namespace Renderer {
     Entity cameraEntity;
 
     void init() {
-        printf("0\n");
         Display::init();
-        printf("1\n");
+
         camera = std::make_unique<Shader::CameraShader>();
         camera->bind();
         camera->setProjMatrix(Maths::createProjMatrix());
         camera->setViewMatrix(Maths::createViewMatrix(cameraEntity));
         camera->unbind();
-        printf("2\n");
     }
 
     void addScene(const std::string& name, std::unique_ptr<Scene>& scene) {

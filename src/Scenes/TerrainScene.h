@@ -26,13 +26,11 @@ private:
     Renderer::Entity player;
     sf::Clock clock;
 
-    // terrainSize = ixi heights
-    // must divide bz 3
     std::unique_ptr<Object::Mesh> terrain;
     std::vector<GLfloat> terrainVertices;
     std::vector<GLuint>  terrainIndices;
     int terrainSize = 100;
-    int terrainHeightMax = 10;
+    int terrainHeightMax = 3;
 public:
     TerrainScene() {
         /**
@@ -41,7 +39,7 @@ public:
         for (int x = 0; x < terrainSize; ++x) {
             for (int z = 0; z < terrainSize; ++z) {
                 terrainVertices.push_back(-terrainSize/2.0f + x);
-                terrainVertices.push_back(xzToY(x, z)*terrainHeightMax);
+                terrainVertices.push_back(std::max(xzToY(x, z)*terrainHeightMax, 0.4f));
                 terrainVertices.push_back(-terrainSize/2.0f + z);
             }
         }
@@ -86,7 +84,7 @@ public:
     void update() {
         player.rotation = {
             0,
-            sin(clock.getElapsedTime().asSeconds()/20)*180,
+            fmod(clock.getElapsedTime().asSeconds(), 360),
             0
         };
     }

@@ -7,5 +7,5 @@ uniform float time;
 out vec4 color;
 
 void main() {
-    color = vec4(1.0, (passPos.z + 1)/2.0, 1.0, 1.0);
+    color = vec4(1.0, passPos.y/10, 1.0, 1.0);
 }

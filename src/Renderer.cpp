@@ -27,6 +27,18 @@ namespace Renderer {
         m_textures[name] = std::move(texture);
     }
 
+    Object::Mesh * getMeshPtr(const std::string& name) {
+        return m_meshes[name].get();
+    }
+
+    Shader::ShaderProgram * getShaderPtr(const std::string& name) {
+        return m_shaders[name].get();
+    }
+
+    Texture::BasicTexture * getTexturePtr(const std::string& name) {
+        return m_textures[name].get();
+    }
+
     /**
      * Scene Management
      */

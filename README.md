@@ -3,11 +3,13 @@
 
 ![alt tag](http://i.imgur.com/ecJpW8S.png)
 
-### Goals
- - Generate terrain based on player position
- - Move along terrain endlessly
+#### Design
+The main design objective is to keep everything as simple as possible. The Math and Physics namespaces contain relevant math and physics. The Component namespace contains the abstract Component class and all it's derivatives. Including the Render.h file, and calling init, is all that's needed to create a Engine3D context.
 
-### TODO
-#### Renderer Goals:
- - Group objects by common meshes/shaders/textures to minimize resource binding calls, in order to maximize GPU concurrency.
- - Datatype that groups by multiple identifiers, and orders by least identifier group differences. O(1) find.
+#### Structure
+Component
+Entity
+Math
+Physics
+Render
+Scene

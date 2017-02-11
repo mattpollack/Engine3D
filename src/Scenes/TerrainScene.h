@@ -8,25 +8,27 @@ private:
     /**
      * NOISE
      */
+    float _p0 = 17497;
+    float _p1 = 42239;
+
     float _r(float value, float offset) {
         float result = sin(value) * offset;
         return result - floor(result);
     }
 
     float xzToY(float x, float z) {
-        float t0 = _r(x, 3499);
-        float t1 = _r(x, 3571);
-        float t2 = _r(_r(x/z, 3571), 3499);
-        float t3 = _r(_r(z/x, 3571), 3499);
+        float t0 = _r(x, _p0);
+        float t1 = _r(x, _p1);
+        float t2 = _r(_r(x/z, _p1), _p0);
+        float t3 = _r(_r(z/x, _p1), _p0);
 
-        return (_r(t0+t1+t2+t3, 3499) + _r(t0+t1+t2+t3, 3571))/2.0f;
+        return (_r(t0+t1+t2+t3, _p0) + _r(t0+t1+t2+t3, _p1))/2.0f;
     }
 
 private:
     Renderer::Entity player;
     sf::Clock clock;
 
-    std::unique_ptr<Object::Mesh> terrain;
     std::vector<GLfloat> terrainVertices;
     std::vector<GLuint>  terrainIndices;
     int terrainSize = 100;
@@ -46,18 +48,19 @@ public:
 
         for (int x = 0; x < terrainSize - 1; ++x) {
             for (int z = 0; z < terrainSize - 1; ++z) {
-                // T1
+                // T0
                 terrainIndices.push_back(z + 0 + ((x + 0) * terrainSize));
                 terrainIndices.push_back(z + 1 + ((x + 0) * terrainSize));
                 terrainIndices.push_back(z + 0 + ((x + 1) * terrainSize));
 
-                // T2
+                // T1
                 terrainIndices.push_back(z + 0 + ((x + 1) * terrainSize));
                 terrainIndices.push_back(z + 1 + ((x + 0) * terrainSize));
                 terrainIndices.push_back(z + 1 + ((x + 1) * terrainSize));
             }
         }
 
+        std::unique_ptr<Object::Mesh> terrain;
         terrain = std::make_unique<Object::Mesh>();
         terrain.get()->load(terrainVertices, terrainIndices);
 
@@ -77,13 +80,13 @@ public:
         player.position = {
             0,
             -5,
-            -terrainSize/2
+            -10//-terrainSize/2
         };
     }
 
     void update() {
         player.rotation = {
-            0,
+            90,
             fmod(clock.getElapsedTime().asSeconds(), 360),
             0
         };

@@ -26,6 +26,10 @@ namespace Renderer {
     void registerShader (const std::string& name, std::unique_ptr<Shader::ShaderProgram>& shader);
     void registerTexture(const std::string& name, std::unique_ptr<Texture::BasicTexture>& texture);
 
+    Object::Mesh          * getMeshPtr   (const std::string& name);
+    Shader::ShaderProgram * getShaderPtr (const std::string& name);
+    Texture::BasicTexture * getTexturePtr(const std::string& name);
+
     /**
      * Scene Management
      */

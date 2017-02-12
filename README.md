@@ -7,6 +7,7 @@
 The main design objective is to keep everything as simple as possible. The Math and Physics namespaces contain relevant math and physics. The Component namespace contains the abstract Component class and all it's derivatives. Including the Render.h file, and calling init, is all that's needed to create a Engine3D context.
 
 #### Structure
+
 Component
 Entity
 Math
